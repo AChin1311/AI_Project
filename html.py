@@ -33,17 +33,21 @@ HEAD = '''<!DOCTYPE html>
          -moz-border-radius: 5px;
          -webkit-border-radius: 5px;
       }
+      #num {
+         float: left;
+      }
    </style>
 </head>
 <body>
    <div id="wrapper">
+      <div id="btn-bar">
+         <span id="num"></span>
+         <div class="btn" id="ad">Ad</div>
+         <div class="btn" id="nad">Not Ad</div>
+      </div>
       <div>
          <img id="img"/>
          <div id="text"></div>
-      </div>
-      <div id="btn-bar">
-         <div class="btn" id="ad">Ad</div>
-         <div class="btn" id="nad">Not Ad</div>
       </div>
    </div>
    <div id="result">
@@ -63,10 +67,11 @@ TAIL = ''';
             show();
          else {
             $("#wrapper").hide();
-            $("#result").text(ans).show();
+            $("#result").text("["+ans+"]").show();
          }
       }
       function show() {
+         $("#num").text(i);
          $("#img").attr("src", data[i].link);
          $("#text").html(data[i].text);
       }

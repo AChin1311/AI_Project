@@ -7,7 +7,7 @@ out = []
 
 for post in jsond["data"]:
    out.append({
-      "link": post["images"]["standard_resolution"]["url"],
+      "link": post["images"]["low_resolution"]["url"],
       "text": post["caption"]["text"].replace("\n", "<br>")
    })
 
