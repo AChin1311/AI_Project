@@ -50,30 +50,32 @@ HEAD = '''<!DOCTYPE html>
          <div id="text"></div>
       </div>
    </div>
-   <div id="result">
-   </div>
+   <pre id="result">
+   </pre>
    <script src="http://code.jquery.com/jquery.min.js"></script>
    <script>
-      var data = '''
+      var json = '''
 TAIL = ''';
+      var data = json.data;
       var ans = [];
       var len = data.length;
       var i = 0;
 
       function next(r) {
-         ans.push(r);
+         //ans.push(r);
+         data[i].label = r;
          ++i;
          if (i < len)
             show();
          else {
             $("#wrapper").hide();
-            $("#result").text("["+ans+"]").show();
+            $("#result").text(JSON.stringify(json, null, 2)).show();
          }
       }
       function show() {
          $("#num").text(i);
-         $("#img").attr("src", data[i].link);
-         $("#text").html(data[i].text);
+         $("#img").attr("src", data[i].images.low_resolution.url);
+         $("#text").html(data[i].caption.text);
       }
 
       $(function(){
