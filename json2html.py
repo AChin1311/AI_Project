@@ -3,7 +3,7 @@ import sys
 import json
 
 jsond = json.load(file(sys.argv[1]))
-out = []
+
 
 '''
 for post in jsond["data"]:

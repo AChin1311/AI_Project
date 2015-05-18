@@ -22,6 +22,7 @@ HEAD = '''<!DOCTYPE html>
       }
       .btn {
          color: white;
+         background-color: grey;
          font-size: 20px;
          display: inline-block; 
          padding: 6px 0px;
@@ -42,6 +43,7 @@ HEAD = '''<!DOCTYPE html>
    <div id="wrapper">
       <div id="btn-bar">
          <span id="num"></span>
+         <div class="btn" id="prev">Prev</div>
          <div class="btn" id="ad">Ad</div>
          <div class="btn" id="nad">Not Ad</div>
       </div>
@@ -56,10 +58,17 @@ HEAD = '''<!DOCTYPE html>
    <script>
       var json = '''
 TAIL = ''';
-      var data = json.data;
+      var data = json.data ? json.data : json;
       var ans = [];
       var len = data.length;
       var i = 0;
+
+      function prev() {
+        if (i > 0) {
+            --i;
+            show();
+        }
+      }
 
       function next(r) {
          //ans.push(r);
@@ -79,6 +88,9 @@ TAIL = ''';
       }
 
       $(function(){
+        $("#prev").click(function() {
+            prev();
+        });
          $("#ad").click(function() {
             next(1);
          })
