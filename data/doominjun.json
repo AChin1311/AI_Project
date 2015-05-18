@@ -1,16 +1,4 @@
-{
-  "pagination": {
-    "next_max_tag_id": "985862070514109467",
-    "deprecation_warning": "next_max_id and min_id are deprecated for this endpoint; use min_tag_id and max_tag_id instead",
-    "next_max_id": "985862070514109467",
-    "next_min_id": "987400028419149254",
-    "min_tag_id": "987400028419149254",
-    "next_url": "https://api.instagram.com/v1/tags/%E9%83%BD%E6%95%8F%E4%BF%8A/media/recent?access_token=39388375.1fb234f.16e6626e68df48ea9a1484b7db7e6ea0&max_tag_id=985862070514109467"
-  },
-  "meta": {
-    "code": 200
-  },
-  "data": [
+  [
     {
       "user_has_liked": false,
       "attribution": null,
@@ -6436,4 +6424,3 @@
       "label": 1
     }
   ]
-}
