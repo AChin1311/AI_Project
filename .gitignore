@@ -4,3 +4,4 @@
 *.train
 *.test
 config.py
+data/daphne1311.json
