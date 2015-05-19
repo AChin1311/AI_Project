@@ -3,3 +3,4 @@
 *.swp
 *.train
 *.test
+config.py
