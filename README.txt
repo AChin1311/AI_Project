@@ -7,3 +7,6 @@ II. json2libsvm.py
 
 III. get_json.py
 	python get_json.py <tag_name> <amount of post>
+
+IV. getjson2html.py
+	python getjson2html.py <tag_name> <amount of post>
