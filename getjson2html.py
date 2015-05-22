@@ -11,10 +11,12 @@ j = []
 url = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?access_token="+token
 
 while n > 0:
-    req = requests.get(url)
-    url = json.loads(req.text)["pagination"]["next_url"]
-    j += json.loads(req.text)["data"]
-    n -= 20
+	if n < 20:
+		url += "&count=" + str(n)
+	req = requests.get(url)
+	url = json.loads(req.text)["pagination"]["next_url"]
+	j += json.loads(req.text)["data"]
+	n -= 20
 
 fname = tag+".json"
 json.dump(j, open(fname, "w"), indent=2)
