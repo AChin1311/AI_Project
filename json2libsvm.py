@@ -25,7 +25,7 @@ def get_info(id):
     info = jsond["data"]["bio"]
     followby = jsond["data"]["counts"]["followed_by"]
 
-    return info,last,followby
+    return info,last,max(followby, 0.001)
 
 def matching(content):
     wcount = sum(map(lambda s: content.count(s) , keywords))
@@ -71,7 +71,8 @@ def func(post):
     like = post["likes"]["count"]
     comment = post["comments"]["count"]
     content = post["caption"]["text"]
-   
+  
+    print(follower)
     out.append(tag_amount)
     out.append(float(like)/follower)
     out.append(float(comment)/follower)
