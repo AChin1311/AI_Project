@@ -28,9 +28,13 @@ def get_info(id):
     return info,last,max(followby, 0.001)
 
 def matching(content):
+    
+    content.replace(" ", "")
+    content.replace("-", "")
+
     wcount = sum(map(lambda s: content.count(s) , keywords))
-    solist = list(map(lambda s: s in content, social_media))
-    solist.append(wcount)
+    socount = sum(map(lambda s: s in content, social_media))
+    li = [wcount, socount]
     
     mx = 0
     now = 0
@@ -40,9 +44,9 @@ def matching(content):
         else:
             now = 0
         mx = max(mx, now)
-    solist.append(mx)
+    li.append(mx)
 
-    return solist
+    return li
     
 
 def main():
@@ -55,7 +59,7 @@ def main():
 
     data = json.load(open(fname, "r"))
 
-    p = Pool(5)
+    p = Pool(1)
     ret = p.map(func, data)
 
     fl = open(sys.argv[2], "w")
@@ -74,8 +78,9 @@ def func(post):
   
     print(follower)
     out.append(tag_amount)
-    out.append(float(like)/follower)
-    out.append(float(comment)/follower)
+    out.append(like)
+    out.append(comment)
+    out.append(follower)
     out.append(post_last)
 
     out += matching(author_info)
