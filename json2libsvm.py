@@ -6,8 +6,8 @@ import time
 import config
 from multiprocessing import Pool
 
-social_media = ["whatsapp", "facebook", "wechat", "line"]
-keywords = ["$", "購", "禮", "優惠", "郵寄", "價", "面交", "shop", "sell"]
+social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
+keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
 token = config.token
 days = 5
 
