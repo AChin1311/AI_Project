@@ -29,11 +29,10 @@ def get_info(id):
 
 def matching(content):
     
-    content.replace(" ", "")
-    content.replace("-", "")
+    content = content.replace(" ", "").replace("-", "").lower()
 
     wcount = sum(map(lambda s: content.count(s) , keywords))
-    socount = sum(map(lambda s: s in content, social_media))
+    socount = sum(map(lambda s: content.count(s), social_media))
     li = [wcount, socount]
     
     mx = 0
