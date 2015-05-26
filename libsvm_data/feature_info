@@ -1,16 +1,11 @@
-1: tag_amount
-2: like/follower
-3: comment/follower
-4: post_last
-5: whatsapp_author_info
-6: facebook_author_info
-7: wechat_author_info
-8: line_author_info
-9: keyword_count_author_info
-10: longest_digit_author_info
-11: whatsapp_content_info
-12: facebook_content_info
-13: wechat_content_info
-14: line_content_info
-15: keyword_count_content_info
-16: longest_digit_content_info
+1: tag_amount :: int
+2: like :: int
+3: comment :: int
+4: follower :: int
+5: post_last :: int
+6: social_count_author_info :: int
+7: keyword_count_author_info :: int
+8: longest_digit_author_info :: int
+9: social_count_content_info :: int
+10: keyword_count_content_info :: int
+11: longest_digit_content_info :: int
