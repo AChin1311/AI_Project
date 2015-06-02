@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.2/semantic.min.css" />
+   <script src="https://code.jquery.com/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.2/semantic.min.js"></script>
+   <script>
+      var max_tag_id = "{{ max_tag_id }}";
+      var x = true;
+      var last = 0;
+      function getWrapWidth() {
+         return Math.floor($(".row").width() / 310) * 300;
+      }
+      function addPost(m) {
+         var card = $("<div/>", { class: "card" })
+                    .append(
+                      $("<a/>", { class: "image" })
+                      .append(
+                        $("<img/>", { src: m.url })))
+                    .append($("<div/>", { class: "content" })
+                            .append(
+                              $("<a/>", { class: "header", href: "//instagram.com/"+m.user, text: m.user }))
+                            .append(
+                              $("<div/>", { class: "description", text: m.post })))
+                     .appendTo($(".ui.cards"));
+      }
+      $(function() {
+         $("#wrap").width(getWrapWidth()); 
+         $(window).resize(function() {
+            $("#wrap").width(getWrapWidth()); 
+         });
+         $(window).scroll(function() {
+            var scroll = $(window).scrollTop();
+            if (x && scroll > last && scroll + $(window).height() >= $(document).height() - 300) {
+               x = false;
+               $.get("/ajax/{{ tag_name }}/" + max_tag_id, function(data) {
+                  max_tag_id = data.max_tag_id;
+                  for (i in data.medias)
+                     addPost(data.medias[i]);
+                  x = true;
+               }, "json");
+            }
+            last = scroll;
+         });
+      });
+   </script>
+   <style>
+      #wrap {
+         margin: 0 auto;
+      }
+      .ui.cards > .card {
+         word-break: break-all;
+      }
+      
+   </style>
+</head>
+<body>
+   <div class="ui padded page grid">
+      <div class="row">
+         <div class="column">
+            <div id="wrap">
+               <div class="ui cards">
+               {% for m in medias %}
+                  <div class="card">
+                     <a class="image"><img src="{{ m.url }}"></a>
+                     <div class="content">
+                        <a class="header" href="//instagram.com/{{ m.user }}">{{ m.user }}</a>
+                        <div class="meta">
+                           <a>Friends</a>
+                        </div>
+                        <div class="description">
+                           {{ m.post }}
+                        </div>
+                     </div>
+                  </div>
+               {% end for %}
+               </div>
+           </div>
+        </div>
+    </div>
+   </div>
+</body>
+</html>

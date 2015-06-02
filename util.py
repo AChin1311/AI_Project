@@ -10,14 +10,16 @@ social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
 keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
 days = 5
 
-def search_by_tag(tag, count=20):
+def search_by_tag(tag, count=20, max_tag_id=None):
    url = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?access_token="+token+"&count="+str(count)
+   if max_tag_id:
+      url += "&max_tag_id="+max_tag_id
 
-   while True:
-      req = requests.get(url)
-      jdata = json.loads(req.text)
-      yield jdata["data"]
-      url = jdata["pagination"]["next_url"]
+   #while True:
+   req = requests.get(url)
+   jdata = json.loads(req.text)
+   return jdata["data"], jdata["pagination"]["next_max_tag_id"]
+      #url = jdata["pagination"]["next_url"]
 
 def get_info(id):
     
@@ -64,7 +66,7 @@ def features(post):
     author_info, post_last, follower = get_info(post["user"]["id"])
     like = post["likes"]["count"]
     comment = post["comments"]["count"]
-    content = post["caption"]["text"]
+    content = post["caption"]["text"] if post["caption"] else ""
   
     out.append(tag_amount)
     out.append(like)
