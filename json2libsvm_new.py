@@ -7,7 +7,8 @@ import config
 from multiprocessing import Pool
 
 social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
-keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
+#keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
+keywords = [u"日本", u"現貨", u"減肥", u"禮物", u"您", u"公仔", u"買", u"優惠", u"歡迎", u"請", u"查詢", u"韓國", u"面交", u"生日", u"情侶", u"門市"]
 token = config.token
 days = 5
 
@@ -58,7 +59,7 @@ def main():
 
     data = json.load(open(fname, "r"))
 
-    p = Pool(1)
+    p = Pool(5)
     ret = p.map(func, data)
 
     fl = open(sys.argv[2], "w")
@@ -67,7 +68,7 @@ def main():
 
 def func(post):
     out = []
-    print(post)
+    #print(post)
     label = post["label"]
     tag_amount = len(post["tags"])
     author_info, post_last, follower = get_info(post["user"]["id"])
