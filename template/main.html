@@ -16,7 +16,7 @@
                     .append(
                       $("<a/>", { class: "image" })
                       .append(
-                        $("<img/>", { src: m.url })))
+                        $("<img/>", { src: m.url, class: (m.label == 1 ? "false" : "") })))
                     .append($("<div/>", { class: "content" })
                             .append(
                               $("<a/>", { class: "header", href: "//instagram.com/"+m.user, text: m.user }))
@@ -42,6 +42,13 @@
             }
             last = scroll;
          });
+         $("#search-btn").click(function() {
+            window.location = "/" + $("#search-txt").val();
+         });
+         $("#search-txt").keydown(function(e) {
+            if (e.which == 13)
+               window.location = "/" + $("#search-txt").val();
+         });
       });
    </script>
    <style>
@@ -51,18 +58,32 @@
       .ui.cards > .card {
          word-break: break-all;
       }
+      .false {
+         opacity: 0.3;
+      }
       
    </style>
 </head>
 <body>
    <div class="ui padded page grid">
       <div class="row">
+         <div class="center aligned column">
+            <div class="ui huge left icon action input">
+               <i class="tags icon"></i>
+               <input placeholder="Search Tags" type="text" id="search-txt">
+               <button class="ui huge icon button" id="search-btn">
+                  <i class="search icon"></i>
+               </button>
+            </div>
+         </div>
+      </div>
+      <div class="row">
          <div class="column">
             <div id="wrap">
                <div class="ui cards">
                {% for m in medias %}
                   <div class="card">
-                     <a class="image"><img src="{{ m.url }}"></a>
+                     <a class="image"><img src="{{ m.url }}" {% if m.label == 1 %}class="false"{% end if %}></a>
                      <div class="content">
                         <a class="header" href="//instagram.com/{{ m.user }}">{{ m.user }}</a>
                         <div class="meta">
