@@ -10,6 +10,7 @@ filename = [u"夏天.json", u"羊駝.json", u"五月天.json", u"夜景.json", u
 			u"早安.json", u"香港.json", u"都敏俊.json", u"台灣.json", u"正妹.json",
 	       	u"髮型.json", u"馬卡龍.json", u"吃飯.json", u"海邊.json", u"龍貓.json" ]
 dictionary = {}
+L = []
 
 for fn in filename:
 	print (fn)
@@ -32,8 +33,10 @@ for fn in filename:
 					#print (word)
 
 for word in dictionary:
-	if dictionary[word] > 150:
+	if dictionary[word] > 100:
+		L.append((word, dictionary[word]))
 		print(word, dictionary[word])
-			        
+L.sort(key=lambda p: p[1])
+print(L)	        
 
 
