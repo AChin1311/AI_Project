@@ -6,10 +6,10 @@ import time
 import config
 
 token = config.token
+bound = [(1, 59),(0, 4038),(0, 31),(0, 102750),(0, 20),(0, 9),(0, 3),(0, 12),(0, 34),(0, 7),(0, 20)]
 social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
-keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
+keywords = [u"日本", u"現貨", u"減肥", u"禮物", u"您", u"公仔", u"買", u"優惠", u"歡迎", u"請", u"查詢", u"韓國", u"面交", u"生日", u"情侶", u"門市"] 
 days = 5
-bound = []
 
 def search_by_tag(tag, count=20, max_tag_id=None):
    url = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?access_token="+token+"&count="+str(count)
