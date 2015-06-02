@@ -9,6 +9,7 @@ token = config.token
 social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
 keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
 days = 5
+bound = []
 
 def search_by_tag(tag, count=20, max_tag_id=None):
    url = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?access_token="+token+"&count="+str(count)
@@ -77,6 +78,9 @@ def features(post):
     out += matching(author_info)
     out += matching(content)
 
-    return out
+    return map(scale, zip(out, bound))
 
+def scale(x):
+   ft, (lb, ub) = x
+   return -1 + 2 * (ft / (ub - lb))
 
