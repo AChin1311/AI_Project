@@ -9,7 +9,7 @@
       var x = true;
       var last = 0;
       function getWrapWidth() {
-         return Math.floor($(".row").width() / 310) * 300;
+         return Math.floor($(".row:last").width() / 310) * 300;
       }
       function addPost(m) {
          var card = $("<div/>", { class: "card" + (m.label == 1 ? " false" : "") })
@@ -53,6 +53,7 @@
             $(this).addClass("active").siblings().removeClass("active");
             console.log(this);
          })
+         $(".ui.sticky").sticky();
       });
    </script>
    <style>
@@ -65,35 +66,30 @@
       .false {
          opacity: 0.3;
       }
+      .menu {
+         position: fixed;
+         width: 100%;
+         text-align: center;
+         background: #FFF none repeat scroll 0% 0%;
+         z-index: 100;
+         box-shadow: 0px 0px 0px 1px rgba(39, 41, 43, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+      }
       
    </style>
 </head>
 <body>
-<div class="ui fixed large menu">
-   <div class="item"></div>
-   <div class="right menu">
-      <div class="item">
-         <div class="ui transparent icon input">
-            <input placeholder="Search..." type="text" id="search-txt">
-            <i class="search link icon" id="search-btn"></i>
-         </div>
-      </div>
-   </div>
-</div>
    <div class="ui padded page grid">
-   <!--<nav class="ui fixed menu">
-      <div class="right menu">
-         <div class="item">
-            <div class="ui left icon action transparent input">
+      <div class="row">
+         <div class="center aligned column">
+            <div class="ui huge left icon action input">
                <i class="tags icon"></i>
                <input placeholder="Search Tags" type="text" id="search-txt">
-               <button class="ui icon button" id="search-btn">
+               <button class="ui huge icon button" id="search-btn">
                   <i class="search icon"></i>
                </button>
             </div>
          </div>
       </div>
-   </nav>-->
       <div class="row">
          <div class="column">
             <div id="wrap">

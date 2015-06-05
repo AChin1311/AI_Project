@@ -62,6 +62,7 @@ def matching(content):
     return li
 
 def features(post):
+    print post["link"]
     out = []
     tag_amount = len(post["tags"])
     author_info, post_last, follower = get_info(post["user"]["id"])
@@ -82,5 +83,5 @@ def features(post):
 
 def scale(x):
    ft, (lb, ub) = x
-   return -1 + 2 * (ft / (ub - lb))
+   return -1 + 2.0 * (float(ft) / (ub - lb))
 
