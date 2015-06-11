@@ -38,7 +38,6 @@ def get_info(id):
     jsond = json.loads(req.text)
     info = jsond["data"]["full_name"]+jsond["data"]["bio"]
     followby = jsond["data"]["counts"]["followed_by"]
-    print(followby) 
     
     return info,last,max(followby, 0.001)
 
@@ -65,7 +64,6 @@ def matching(content):
     return li
 
 def features(post, scl = True):
-    print post["link"]
     out = []
     tag_amount = len(post["tags"])
     author_info, post_last, follower = get_info(post["user"]["id"])
@@ -81,10 +79,6 @@ def features(post, scl = True):
 
     out += matching(author_info)
     out += matching(content)
-    print("\n---")
-    print(author_info)
-    print(content)
-    print("---\n")
     out.append(0 if post["filter"] == "Normal" else 1)
     out.append(post["comments"]["count"])
 

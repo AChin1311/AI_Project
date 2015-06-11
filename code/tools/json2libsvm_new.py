@@ -8,11 +8,12 @@ import util
 from multiprocessing import Pool
 from functools import partial
 
-social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
-keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
-token = config.token
-days = 5
+#social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
+#keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
+#token = config.token
+#days = 5
 
+'''
 def get_info(id):
     req = requests.get("https://api.instagram.com/v1/users/"+id+"/media/recent?min_timestamp="+str(int(time.time())-86400*days)+"&access_token="+token)
     
@@ -28,6 +29,7 @@ def get_info(id):
     followby = jsond["data"]["counts"]["followed_by"]
 
     return info,last,max(followby, 0.001)
+'''
 
 '''
 def matching(content):
