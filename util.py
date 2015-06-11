@@ -6,10 +6,11 @@ import time
 import config
 
 token = config.token
-bound = [(1, 59),(0, 4038),(0, 31),(0, 102750),(0, 20),(0, 9),(0, 3),(0, 12),(0, 34),(0, 7),(0, 20)]
+#bound = [(1, 59),(0, 4038),(0, 31),(0, 102750),(0, 20),(0, 9),(0, 3),(0, 12),(0, 34),(0, 7),(0, 20)]
+bound = [(1,59),(0,4038),(0,31),(0,105243),(0,20),(0,10),(0,3),(0,12),(0,42),(0,41),(0,7),(0,20),(0,97),(0,1),(0,31)]
 social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
-keywords = [u"日本", u"現貨", u"減肥", u"禮物", u"您", u"公仔", u"買", u"優惠", u"歡迎", u"請", u"查詢", u"韓國", u"面交", u"生日", u"情侶", u"門市"] 
-days = 5
+keywords = [u"日本", u"現貨", u"減肥", u"禮物", u"您", u"公仔", u"買", u"優惠", u"歡迎", u"請", u"查詢", u"韓國", u"面交", u"生日", u"情侶", u"門市", u"禮", u"惠", u"賣", u"購"] 
+days = 20
 
 def search_by_tag(tag, count=20, max_tag_id=None):
    url = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?access_token="+token+"&count="+str(count)
@@ -25,7 +26,8 @@ def search_by_tag(tag, count=20, max_tag_id=None):
 def get_info(id):
     
     req = requests.get("https://api.instagram.com/v1/users/"+id+"/media/recent?min_timestamp="+str(int(time.time())-86400*days)+"&access_token="+token)
-    
+
+
     if req.status_code == 200:
         last = len(json.loads(req.text)["data"])
     else:
@@ -34,11 +36,10 @@ def get_info(id):
     req = requests.get("https://api.instagram.com/v1/users/"+id+"?access_token="+token)
     
     jsond = json.loads(req.text)
-    info = jsond["data"]["bio"]
+    info = jsond["data"]["full_name"]+jsond["data"]["bio"]
     followby = jsond["data"]["counts"]["followed_by"]
+    print(followby) 
     
-    
-
     return info,last,max(followby, 0.001)
 
 def matching(content):
@@ -51,17 +52,19 @@ def matching(content):
     
     mx = 0
     now = 0
+    total = 0
     for char in content:
         if char.isdigit():
             now += 1
+            total += 1
         else:
             now = 0
         mx = max(mx, now)
-    li.append(mx)
+    li += [mx, total]
 
     return li
 
-def features(post):
+def features(post, scl = True):
     print post["link"]
     out = []
     tag_amount = len(post["tags"])
@@ -78,7 +81,15 @@ def features(post):
 
     out += matching(author_info)
     out += matching(content)
+    print("\n---")
+    print(author_info)
+    print(content)
+    print("---\n")
+    out.append(0 if post["filter"] == "Normal" else 1)
+    out.append(post["comments"]["count"])
 
+    if(scl == False):
+        return out
     return map(scale, zip(out, bound))
 
 def scale(x):

@@ -4,7 +4,9 @@ import requests
 import sys
 import time
 import config
+import util
 from multiprocessing import Pool
+from functools import partial
 
 social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
 keywords = [u"$", u"購", u"禮", u"優惠", u"郵寄", u"價", u"面交", u"shop", u"sell"]
@@ -27,6 +29,7 @@ def get_info(id):
 
     return info,last,max(followby, 0.001)
 
+'''
 def matching(content):
     
     content.replace(" ", "")
@@ -47,7 +50,7 @@ def matching(content):
     li.append(mx)
 
     return li
-    
+''' 
 
 def main():
 
@@ -59,13 +62,18 @@ def main():
 
     data = json.load(open(fname, "r"))
 
-    p = Pool(1)
-    ret = p.map(func, data)
-
+    p = Pool(5)
+    #ret = p.map(util.features, zip(data, False)
+    ret = p.map(partial(util.features, scl = False), data)
+    p.close()
+    p.join()
+    
     fl = open(sys.argv[2], "w")
-    for line in ret:
-        fl.write(line+"\n")
+    for da,fe in zip(data, ret):
+        lab = "+1 " if da["label"] else "-1 "
+        fl.write(lab+" ".join(map(lambda z: "%d:%f" % (z[0]+1, z[1]), enumerate(fe)))+"\n")
 
+'''
 def func(post):
     out = []
     print(post)
@@ -83,11 +91,12 @@ def func(post):
     out.append(follower)
     out.append(post_last)
 
-    out += matching(author_info)
-    out += matching(content)
+    out += util.matching(author_info)
+    out += util.matching(content)
 
     label = "+1 " if label else "-1 "
     return label+" ".join(map(lambda z: "%d:%f" % (z[0]+1, z[1]), enumerate(out)))
+'''
 
 if __name__ == "__main__":
     main()

@@ -55,7 +55,9 @@ class MainHandler(tornado.web.RequestHandler):
 
       fs = p.map(util.features, medias)
       p_label, _, _ = libsvm.svm_predict([1] * len(fs), fs, model)
-
+      for (m, f) in zip(medias, fs):
+         #print(m["caption"]["text"])
+         print(f)
       if self.prefix == "ajax":
          medias = map(lambda (m, l): Media(m, l).__dict__, zip(medias, p_label))
          self.write(json.dumps({
@@ -84,5 +86,5 @@ application = tornado.web.Application([
 )
 
 if __name__ == "__main__":
-   application.listen(8888)
+   application.listen(9999)
    tornado.ioloop.IOLoop.instance().start()
