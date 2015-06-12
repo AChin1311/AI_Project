@@ -6,7 +6,7 @@ import util
 import json
 from multiprocessing import Pool
 import os
-sys.path.append("./libsvm-3.20/python")
+sys.path.append("./mltools/libsvm-3.20/python")
 import svmutil as libsvm
 
 model = libsvm.svm_load_model(sys.argv[1])
