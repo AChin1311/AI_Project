@@ -35,7 +35,7 @@ def evaluate(teY, prY):
 def main():
 
     if len(sys.argv) != 3:
-        print("Usage: python destree.py [train-data] [test-data]")
+        print("Usage: python ranforest.py [train-data] [test-data]")
         exit(0)
     print(sys.argv[1])
     trY, trX = read_problem(sys.argv[1])
