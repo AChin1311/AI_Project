@@ -196,7 +196,7 @@ Keywords & We try to find the keywords which advertisers often use in posts by s
 
 \begin{block}{Data Description}
 
-We collect total 1920 posts, in which a hashtag consist of 60 posts, and randomly split the hashtags into two parts with same posts size 960. Note that we do not random by posts, since we want to examine whether our model would still perform well on different hashtags.
+We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly split the hashtags into two parts with same posts size 960. Note that we do not random by posts but by hashtags, since we want to examine whether our model would still perform well on different hashtags.
 
 \begin{table}[h]
 \centering
@@ -258,10 +258,17 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts, and randoml
 		Decision tree is a classification algorithm that performs a recursive binary partitioning of the feature space. The tree predicts the same label for each leaf partition. Each partition is chosen by selecting the best split from a set of possible splits, in order to maximize the information gain at a tree node. Here we directly use the implementation in the library scikit-learn.
 	%\end{itemize}
 \item \texttt{Random Forests}
+		
 	
-\item Linear Support Vector Machines
+	
+\item \texttt{Support Vector Machines}
+	\begin{itemize}
+		\item Linear
+		
+		\item Kernel
+	\end{itemize}
+	
 
-\item Kernel Support Vector Machines
 \end{itemize}
 
 \end{column}
@@ -316,12 +323,35 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts, and randoml
 
 %------------------------------------------------
 
-\begin{block}{Results: Figure}
+\begin{block}{Results}
 
-\begin{figure}
-\includegraphics[width=0.8\linewidth]{placeholder.jpg}
-\caption{Figure caption}
-\end{figure}
+
+
+\begin{table}[h]
+\centering
+\caption{Results of using default settings on each method}
+\label{result1}
+\begin{tabular}{l|l|l}
+                    & Testing Accuracy on Set 1     & Testing Accuracy on Set 2     \\ \hline
+\texttt{Decision Tree}       & 94.58\% (908/960) & 93.33\% (896/960) \\ \hline
+\texttt{Random Forests}      & 95.94\% (921/960) & 96.56\% (927/960) \\ \hline
+\texttt{linear SVM (l2\_l2)} & 91.56\% (879/960) & 91.86\% (882/960) \\ \hline
+\texttt{RBF Kernel SVM (c-SVC)}      & 76.35\% (733/960) & 85.21\% (818/960)        
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Compare scaling data and parameter selection by using 5-fold cross validation on SVMs}
+\label{result2}
+\begin{tabular}{l|l|l}
+                                           & Testing Accuracy on Set 1 & Testing Accuracy on Set 2 \\ \hline
+\texttt{linear SVM} (scaled data)                & 97.92\% (940/960)         & 97.08\% (932/960)         \\ \hline
+\texttt{linear SVM} (5-fold CV) & 98.02\% (941/960)         & 97.97\% (940/960)         \\ \hline
+\texttt{kernel SVM} (scaled data)                & 96.7708\% (929/960)       & 93.54\% (898/960)         \\ \hline
+\texttt{kernel SVM} (5-fold CV) & 98.2292\% (943/960)       & 97.29\% (934/960)                        
+\end{tabular}
+\end{table}
 
 \end{block}
 
