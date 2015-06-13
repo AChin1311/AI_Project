@@ -7,7 +7,10 @@ import config
 
 token = config.token
 #bound = [(1, 59),(0, 4038),(0, 31),(0, 102750),(0, 20),(0, 9),(0, 3),(0, 12),(0, 34),(0, 7),(0, 20)]
-bound = [(1,59),(0,4038),(0,31),(0,105243),(0,20),(0,10),(0,3),(0,12),(0,42),(0,41),(0,7),(0,20),(0,97),(0,1),(0,31)]
+#bound = [(1,59),(0,4038),(0,31),(0,105243),(0,20),(0,10),(0,3),(0,12),(0,42),(0,41),(0,7),(0,20),(0,97),(0,1),(0,31)]
+
+bound = {}
+lower, upper = -1, 1
 social_media = [u"whatsapp", u"facebook", u"wechat", u"line"]
 #keywords = [u"日本", u"現貨", u"減肥", u"禮物", u"您", u"公仔", u"買", u"優惠", u"歡迎", u"請", u"查詢", u"韓國", u"面交", u"生日", u"情侶", u"門市", u"禮", u"惠", u"賣", u"購"]
 
@@ -56,9 +59,13 @@ def matching(content):
     for cha in keychars:
         cnt = content.count(cha)
         li.append(cnt)
+
     for word in keywords:
         cnt = content.count(word)
+        if cnt != 0:
+            print(word)
         li.append(cnt)
+
     #wcount = sum(map(lambda s: content.count(s) , keywords))
     socount = sum(map(lambda s: content.count(s), social_media))
     #li = [wcount, socount]
@@ -97,11 +104,28 @@ def features(post, scl = True):
     out.append(0 if post["filter"] == "Normal" else 1)
     out.append(post["comments"]["count"])
 
-    if(scl == False):
+    if scl == False:
         return out
-    return map(scale, zip(out, bound))
+   
+    for i, val in enumerate(out):
+        out[i] = scale(i+1, val)
+    return out
+    #return map(scale, zip(out, bound))
 
-def scale(x):
-   ft, (lb, ub) = x
-   return -1 + 2.0 * (float(ft) / (ub - lb))
+def scale(i, val):
+    if not i in bound:
+        return lower
+    lb, ub = bound[i]
+    return lower + (upper-lower) * (float(val) / (ub - lb))
 
+def load_bound(bound_path):
+    f = open(bound_path, "r")
+    f.readline()
+
+    lower, upper = f.readline().split(' ')
+    lower, upper = int(lower), int(upper)
+    
+    for line in f:
+        idx, lb, ub = line.split(' ')
+        idx, lb, ub = int(idx), int(lb), int(ub)
+        bound[idx] = (lb, ub)

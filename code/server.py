@@ -9,7 +9,12 @@ import os
 sys.path.append("./mltools/libsvm-3.20/python")
 import svmutil as libsvm
 
+if len(sys.argv) != 3:
+    print("Usage: python server.py [model-file] [range-file]")
+    exit(0)
+
 model = libsvm.svm_load_model(sys.argv[1])
+util.load_bound(sys.argv[2])
 
 class Media:
    def __init__(self, media, l=""):
@@ -56,7 +61,7 @@ class MainHandler(tornado.web.RequestHandler):
       fs = p.map(util.features, medias)
       p_label, _, _ = libsvm.svm_predict([1] * len(fs), fs, model)
       for (m, f) in zip(medias, fs):
-         #print(m["caption"]["text"])
+         print(m["caption"]["text"])
          print(f)
       if self.prefix == "ajax":
          medias = map(lambda (m, l): Media(m, l).__dict__, zip(medias, p_label))
