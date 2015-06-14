@@ -76,19 +76,6 @@
 
 \begin{column}{.465\textwidth} % The first column
 
-%----------------------------------------------------------------------------------------
-%	OBJECTIVES
-%----------------------------------------------------------------------------------------
-
-%\begin{block}{Objectives}
-
-%\begin{enumerate}
-%\item Donec fringilla, velit id lobortis commodo, eros dui %consectetur mi, ut interdum lorem dui sed mauris.
-%\item Nulla ac nulla rhoncus est bibendum ullamcorper:
-%\item Quisque vestibulum, nisl sit amet gravida ultricies dis %parturient montes, nascetur ridiculus musobortis commodo, eros %dui consectetur mi.
-%\end{enumerate}
-
-%\end{block}
 
 %----------------------------------------------------------------------------------------
 %	INTRODUCTION
@@ -96,18 +83,18 @@
             
 \begin{block}{Introduction}
 
-\par Instagram is an online mobile photo-sharing, video-sharing and social networking service, which rapidly gained popularity, with over 300 million as of December 2014. One of the features in Instagram is that users can add hashtags on their photos. Using specific tags can help users connect with other like-minded people on Instagram. For example, when searching \#cat on Instagram, users can explore many special and cute photos related to cats. 
+\par Instagram is an online mobile photo-sharing, video-sharing and social networking service, which rapidly gained popularity, with over 300 million as of December 2014. One of the features in Instagram is that users can add hashtags on their posts. Using specific tags help users connect with other like-minded people on Instagram. For example, when searching \#cat on Instagram, users can explore a veriaty of photos related to cats. 
 
-\quad Therefore, we wonder whether the Chinese hashtags on Instagram are also fancy. We searched hashtags such as \#台灣,  expecting to get some beautiful scene in Taiwan. Unfortunately, there are so many spamming and advertising posts! We think that will be a very bad experience for users.Thus, we aim to imporve the quility of Chinese hashtags and try to classify the spam posts by using machine learning techniques.
-
+\quad Therefore, we wonder how well do the Chinese hashtags perform on Instagram. We searched for posts with hashtag \#台灣. Out of our expectation, instead of geting beautiful scenes in Taiwan or anything related, the results were full of spamming and advertising posts! That’s a bad user-experience. Therefore, we decided to imporve the quility of results when searching for Chinese hashtags through recognizing the spam posts with machine learning techniques.
+ 
 \begin{figure}
 \centering
-\subfigure[An example of normal post in \#台灣]{
-	\includegraphics[width=0.3\linewidth]{normpost.jpg}
+\subfigure[A normal post in \#台灣]{
+	\includegraphics[width=0.25\linewidth]{normpost.jpg}
 }
 \hspace{1em}
-\subfigure[An example of spam post in \#台灣]{
-	\includegraphics[width=0.3\linewidth]{spampost.jpg}
+\subfigure[A spam post in \#台灣]{
+	\includegraphics[width=0.25\linewidth]{spampost.jpg}
 }
 \end{figure}
 
@@ -170,22 +157,33 @@ Keywords & We try to find the keywords which advertisers often use in posts by s
 
 
 %----------------------------------------------------------------------------------------
-%	METHODS
+%	Feature Sets Details
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Feature Sets Details}
 
-
 \begin{itemize}
-\item Feature Set 1
+\item Feature Set 1 -- Naive Features
 	\begin{itemize}
-		\item Based on the observation above, we come up with some simple features at first, which includes \texttt{tag-amount}, \texttt{longest-digits}, \texttt{social-media}, \texttt{keyword-count}, ..., totally 11 features. In particular \texttt{keyword-count}, we only consider about ten words produced by us. Notice that we consider not only the content in posts, but also the info page of authors. We think that makes sense since advertisers usually put the contact info to author description. 
+		\item First, we come up with simple features, including \texttt{tag-amount}, \texttt{longest-digits}, \texttt{social-media}, \texttt{keyword-count}, \texttt{like-amount}, \texttt{comment-amount}, \texttt{follower-amount}, \texttt{post-amount-5day}, ...etc., totally 11 features. In particular, we only consider nine keywords when calculating keyword. Notice that we consider not only the content in posts, but also in author profile.  
 	\end{itemize}
-\item Feature Set 2
+\item Feature Set 2 -- Unigram Language Model
 	\begin{itemize}
-		\item However, it is not enough to become a general model by using only ten keywords. Therefore, we take some analysis on the training data by a Chinese text segmentation tool called \texttt{jieba}. By using the tool, we count frequency of each word and select the ones occur more than 50 times, and then pick the words as the features, representing how many times the words appear in contents. The method actually called uni-gram in Language Model. Similarly, we also take Chinese character into consideration, and finally the number of features will up to 1000.
+		\item To strengthen the model, we analyize the training data with \texttt{Jieba}, a Chinese text segmentation tool. With \texttt{Jieba}, we calculate the frequency of each word and each single character. Then, select those occur more than 50 times as feature with its time of appearance as value. Eventually, 1113 features in total.
 	\end{itemize}
 \end{itemize}
+
+
+%\begin{itemize}
+%\item Feature Set 1
+%	\begin{itemize}
+%		\item Based on the observation above, we come up with some simple features at first, which includes \texttt{tag-amount}, \texttt{longest-digits}, \texttt{social-media}, \texttt{keyword-count}, \texttt{like-amount}, \texttt{comment-amount}, \texttt{follower-amount}, \texttt{post-amount-5day} ..., totally 11 features. In particular \texttt{keyword-count}, we only consider about ten words produced by us. Notice that we consider not only the content in posts, but also the info page of authors. We think that makes sense since advertisers usually put the contact info to author description. 
+%	\end{itemize}
+%\item Feature Set 2
+%	\begin{itemize}
+%		\item However, it is not enough to become a general model by using only ten keywords. Therefore, we take some analysis on the training data by a Chinese text segmentation tool called \texttt{jieba}. By using the tool, we count frequency of each word and select the ones occur more than 50 times, and then pick the words as the features, representing how many times the words appear in contents. The method actually called uni-gram in Language Model. Similarly, we also take Chinese character into consideration, and finally the number of features will up to 1113.
+%	\end{itemize}
+%\end{itemize}
 \end{block}
 
 
@@ -196,40 +194,82 @@ Keywords & We try to find the keywords which advertisers often use in posts by s
 
 \begin{block}{Data Description}
 
-We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly split the hashtags into two parts with same posts size 960. Note that we do not random by posts but by hashtags, since we want to examine whether our model would still perform well on different hashtags.
+We randomly split the hashtags into two parts with same posts size 960. Note that we do not random by posts but by hashtags, since we want to examine whether our model would still perform well on different hashtags.
 
 \begin{table}[h]
 \centering
-\caption{Data Description}
+
 \label{data-table}
 \begin{tabular}{lll}
 \multicolumn{1}{l|}{Hashtags (top - training data, bottom - testing data)}                                                                                 & \multicolumn{1}{l|}{spam} & not spam \\ \hline
 \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}文青、日本、母親節、吃飯、龍貓、早安、蔬菜、都敏俊\\ 蛋黃哥、夏天、五月天、運動、髮型、馬卡龍、台灣、正妹\end{tabular}} & \multicolumn{1}{l|}{417}  & 543      \\ \hline
-\multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}天氣、哭、可愛、人生、廢話、香港、生日快樂、羊駝\\ 迪士尼、夜景、閃光、美食、腳踏車、海邊、北海道、貓咪\end{tabular}}  & \multicolumn{1}{l|}{726}  & 234      \\
-                                                                                                                    &                           &          \\
-                                                                                                                    &                           &          \\
-                                                                                                                    &                           &         
+\multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}天氣、哭、可愛、人生、廢話、香港、生日快樂、羊駝\\ 迪士尼、夜景、閃光、美食、腳踏車、海邊、北海道、貓咪\end{tabular}}  & \multicolumn{1}{l|}{726}  & 234      
+                                                                                                                    
 \end{tabular}
+\caption{Total 1920 posts, in which a hashtag consist of 60 posts.}
 \end{table}
+
+
+
 \end{block}
 
 %----------------------------------------------------------------------------------------
-%	MATHEMATICAL SECTION
+%	DEMO
 %----------------------------------------------------------------------------------------
 
-%\begin{block}{Mathematical Section}
+\begin{block}{Website Demo}
 
+\begin{columns}
+
+\begin{column}{.5\textwidth}
+
+\begin{figure}
+\includegraphics[width=0.75\linewidth]{before}
+\caption{search \#台灣 on Instagram}
+\end{figure}
+
+\end{column}
+
+\begin{column}{.5\textwidth}
+
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{after}
+\caption{search \#台灣 on our website}
+\end{figure}
+
+\end{column}
+
+\end{columns}
+
+\end{block}
+
+
+%\begin{block}{Method}
+
+%\begin{columns}
+
+%\begin{column}{.5\textwidth}
 %\begin{itemize}
-%\item Maecenas Ultricies Feugiat Velit Non Mattis.
-%\begin{itemize}
-%\item Duis ante erat, bibendum nec tempus nec, interdum quis est. Nulla at mollis %tortor. Phasellus quis leo dolor, aliquam laoreet orci $X$ Donec dapibus sagittis %neque eu nec, interdum quis est. $Y_n, n=1,\cdots,N$ ndum nec tempus nec, interd
-%\begin{align*}
-%X \rightarrow r(X) & = \arg \max_{c} \Big\{ \max_n \big\{ \sum_{x_i \in X} %\delta(x_i,Y_{n,c})\big\} \Big\} 
-%\end{align*}
-%\item Cras faucibus scelerisque cursus. Proin ut vestibulum augue. $\delta(x_i,Y_{n,c})$
+
+%\item \texttt{Decision Tree} \\
+	%\begin{itemize}
+	%	\item 
+		%Decision tree is a classification algorithm that performs a recursive binary partitioning of the feature space. The tree predicts the same label for each leaf partition. Each partition is chosen by selecting the best split from a set of possible splits, in order to maximize the information gain at a tree node. Here we  use the implementation in \texttt{scikit-learn}\cite{scikit-learn} library.
+	%\end{itemize}
 %\end{itemize}
-%\item Fusce tempus arcu id ligula varius dictum. Donec ut nisl dui, ac consectetur elit. In nec enim porta augue venenatis sollicitudin. Phasellus quis nunc neque. Suspendisse mauris diam, suscipit non gravida in, placerat id enim. Ut nec ipsum in lectus ultrices sagittis.
-%\end{itemize}
+
+%\end{column}
+
+%\begin{column}{.4\textwidth}
+
+%\begin{figure}
+%\includegraphics[width=1\linewidth]{decision_tree.png}
+%\caption{Decision tree}
+%\end{figure}
+
+%\end{column}
+
+%\end{columns}
 
 %\end{block}
 
@@ -245,7 +285,7 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 %	METHOD
 %----------------------------------------------------------------------------------------
 
-\begin{block}{METHOD}
+\begin{block}{Method}
 
 \begin{columns}
 
@@ -253,22 +293,23 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 \begin{itemize}
 
 \item \texttt{Decision Tree} \\
-	%\begin{itemize}
-	%	\item 
-		Decision tree is a classification algorithm that performs a recursive binary partitioning of the feature space. The tree predicts the same label for each leaf partition. Each partition is chosen by selecting the best split from a set of possible splits, in order to maximize the information gain at a tree node. Here we directly use the implementation in the library scikit-learn.
-	%\end{itemize}
-\item \texttt{Random Forests}
-		
-	
-	
-\item \texttt{Support Vector Machines}
 	\begin{itemize}
-		\item Linear
-		
-		\item Kernel
+		\item 
+		Decision tree is a classification algorithm that performs a recursive binary partitioning of the feature space. The tree predicts the same label for each leaf partition. Each partition is chosen by selecting the best split from a set of possible splits, in order to maximize the information gain at a tree node. Here we  use the implementation in \texttt{scikit-learn} \cite{scikit-learn} library.
 	\end{itemize}
-	
+\item \texttt{Random Forests} \\
+	\begin{itemize}
+		\item In Random Forests, each tree in the ensemble is built from a sample subset from the features. That is, when splitting a node during the construction of the tree, the split that is chosen is no longer the best split among all features. Instead, the split that is picked is the best split among a random subset of the features. Here we use the implementation in \texttt{scikit-learn} library.
+	\end{itemize}
 
+
+	
+	
+\item \texttt{Support Vector Machines} \\
+\begin{itemize}
+\item A support vector machine constructs a hyperplane or set of hyperplanes in a high dimensional space, which can be used for classification, regression. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin the lower the generalization error of the classifier. Here we use the popular software \texttt{liblinear}\cite{REF08a} and \texttt{libsvm}\cite{CC01a}.
+\end{itemize}
+	
 \end{itemize}
 
 \end{column}
@@ -280,44 +321,22 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 \caption{Decision tree}
 \end{figure}
 
+\begin{figure}
+\includegraphics[width=1\linewidth]{svm-core.png}
+\caption{Maximal margin hyperplane}
+\end{figure}
+
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{kernel-trick.jpeg}
+\caption{Kernel support vector machine}
+\end{figure}
+
+
 \end{column}
 
 \end{columns}
 
-
-
-
-
-%\begin{table}
-%\begin{tabular}{l l l}
-%\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-%\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
-%Treatment 2 & 0.0015681 & 0.910 \\
-%Treatment 3 & 0.0009271 & 0.296 \\
-%\bottomrule
-%\end{tabular}
-%\caption{Table caption}
-%\end{table}
-
-%\begin{itemize}
-%\item Sollicitudin Vel Orci
-%\item Maecenas Ultricies Feugiat Velit Non Mattis.
-%\end{itemize}
-
-%\begin{table}
-%\begin{tabular}{l l l}
-%\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-%\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
-%Treatment 2 & 0.0015681 & 0.910 \\
-%Treatment 3 & 0.0009271 & 0.296 \\
-%\bottomrule
-%\end{tabular}
-%\caption{Table caption}
-%\end{table}
      
 \end{block}
 
@@ -325,7 +344,7 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 
 \begin{block}{Results}
 
-
+To our surprise, the performance of every method are amazing. We think the reason is that we get the important features in spam posts. By applying some feature selection tools\cite{YW04a}, we discover that \texttt{longest-digits}, \texttt{total-digits}, \texttt{tag-amount} is the most critical features we have. We can only use five features to perform high prediction(about 95\%). 
 
 \begin{table}[h]
 \centering
@@ -339,6 +358,9 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 \texttt{RBF Kernel SVM (c-SVC)}      & 76.35\% (733/960) & 85.21\% (818/960)        
 \end{tabular}
 \end{table}
+
+Another point is that \texttt{Kernel SVM} performs bad in the default settings. The reason is that we do not scale data before applying SVM, which will lead to features with greater numeric ranges dominate those in smaller numeric ranges. After scaling data, the performance dramatically improved, check the results in Table \ref{result2}. Also, the parameter selection on SVM is important. Here we use 5-fold cross validation to select parameter $C$ \cite{BYC15a} and ($\gamma$ in \texttt{Kernel SVM}), which also improve the performance on testing data.
+
 
 \begin{table}[h]
 \centering
@@ -356,17 +378,47 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 \end{block}
 
 %----------------------------------------------------------------------------------------
+%	DEMO
+%----------------------------------------------------------------------------------------
+
+%\begin{block}{Website Demo}
+
+%begin{columns}
+
+%\begin{column}{.4\textwidth}
+
+%\begin{figure}
+%\includegraphics[width=0.75\linewidth]{before}
+%\caption{Before}
+%\end{figure}
+
+%\end{column}
+
+%\begin{column}{.4\textwidth}
+
+%\begin{figure}
+%\includegraphics[width=0.8\linewidth]{after}
+%\caption{After}
+%\end{figure}
+
+%\end{column}
+
+%\end{columns}
+
+%\end{block}
+
+
+%----------------------------------------------------------------------------------------
 %	CONCLUSION
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Conclusion}
+\begin{block}{Conclusion and Future Works}
 
-\begin{itemize}
-\item Opet volutpat ligula. Duis semper lorem eget dui dignissim porttitor. Nulla facilisi. In ullamcorper lorem quis dolor iaculis nec egestas enim ultricies. Cras ut mauris elit, ut lacinia dui. Proin in ante et libero hendrerit iaculis.
-\item Nulla eu erat a urna laoreet auctor id a turpis. Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. 
-\item Aenean id neque dolor.
-\item Opet volutpat ligula. Duis semper lorem eget dui dignissim porttitor. Nulla facilisi. In ullamcorper lorem quis dolor iaculis nec egestas enim ultricies. Cras ut mauris elit, ut lacinia dui. Proin in ante et libero hendrerit iaculis.
-\end{itemize}
+Though our current model has performed well on the testing data, there are still some improvements can be done. First, in our current model, we only count the times of keywords appearance, regardless of the order of words. Thus, to make the model more precise, we may apply Natural Language Processing(NLP) methods to analyze the semantics of a post. 
+
+\quad Secondly, there are information lying in the pictures that we ignore in our model. Some adveritsers tend to show selling information on their sharing-photos, including the price of products, social accounts and so on. We may use the Optical Character Recognition (OCR) techniques to extract these features. Besides characters, recognizing the objects in the pictures helps as well. We have discovered some auto-tagging APIs such as \texttt{imagga.com} and \texttt{JARVIS.ai}. These APIs are able to tell the possible concepts of a given image. We will apply them to improve the prediction, or even build a Convolutional Neural Network by ourself to accomplish the image recognition.
+
+%Third, we want to improve the performance of our web server. While browsing the current website, delay may occur when scrolling down since the server has to fetch the author’s recent posts, bio, etc. for each request. One possible way to fix the problem is adding cache, thus we don’t have to fetch the same contents twice.
 
 \end{block}
 
@@ -375,40 +427,13 @@ We collect total 1920 posts, in which a hashtag consist of 60 posts. We randomly
 %----------------------------------------------------------------------------------------
 
 \begin{block}{References}
-        
-\nocite{*} % Insert publications even if they are not cited in the poster
-\small{\bibliographystyle{unsrt}
-\bibliography{sample}}
+
+%\nocite{*} % Insert publications even if they are not cited in the poster
+\bibliographystyle{ieeetr}
+\bibliography{sample}
 
 \end{block}
 
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGEMENTS
-%----------------------------------------------------------------------------------------
-
-\begin{block}{Acknowledgments}
-
-\begin{itemize}
-\item Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. Aenean id neque dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-\end{itemize}
-
-\end{block}
-
-%----------------------------------------------------------------------------------------
-%	CONTACT INFORMATION
-%----------------------------------------------------------------------------------------
-
-\setbeamercolor{block title}{fg=black,bg=orange!70} % Change the block title color
-
-\begin{block}{Contact Information}
-
-\begin{itemize}
-\item Web: \href{http://www.university.edu/smithlab}{http://www.university.edu/smithlab}
-\item Email: \href{mailto:john@smith.com}{john@smith.com}
-\item Phone: +1 (000) 111 1111
-\end{itemize}
-
-\end{block}
 
 %----------------------------------------------------------------------------------------
 
