@@ -11,7 +11,7 @@ For example, when searching #cat on Instagram, users can explore a variety of ph
 
 ## Installation
 
-1. Get your access code on Instagram, please see the tutorial (http://stackoverflow.com/questions/16496511/how-to-get-an-instagram-access-token)
+1. Get your access-token on Instagram, please see the tutorial (http://stackoverflow.com/questions/16496511/how-to-get-an-instagram-access-token)
 2. Create a new file ```./code/config.py```, and add a line of code ```token = "[your-token]"```
 2. Download libsvm-3.20 (https://github.com/cjlin1/libsvm/releases) and unzip to the directory **./code/mltools**
 2. Change directory to ```./code/mltools/libsvm-3.20/python``` and type ```make```
