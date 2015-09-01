@@ -19,7 +19,7 @@ For example, when searching #cat on Instagram, users can explore a variety of ph
 4. Then the service will run on the 9999 port, visit [http://localhost:9999](http://localhost:9999)
 5. Succeed! now you can input any hashtags to the top-right search bar!
 
-If you are interesting to our technical details, please check our poster.
+If you are interesting to our technical details, please check our poster (https://drive.google.com/file/d/0B13ab_fQ7QbjTV85aUpaR2F3M0k/view).
 
 ## Reference
 
