@@ -47,7 +47,7 @@ def get_info(id):
     jsond = json.loads(req.text)
     info = jsond["data"]["full_name"]+jsond["data"]["bio"]
     followby = jsond["data"]["counts"]["followed_by"]
-    print(followby) 
+    #print(followby) 
     return info,last,max(followby, 0.001)
 
 def matching(content):
@@ -62,8 +62,8 @@ def matching(content):
 
     for word in keywords:
         cnt = content.count(word)
-        if cnt != 0:
-            print(word)
+        #if cnt != 0:
+        #    print(word)
         li.append(cnt)
 
     #wcount = sum(map(lambda s: content.count(s) , keywords))

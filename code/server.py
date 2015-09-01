@@ -9,8 +9,8 @@ import os
 sys.path.append("./mltools/libsvm-3.20/python")
 import svmutil as libsvm
 
-if len(sys.argv) != 3:
-    print("Usage: python server.py [model-file] [range-file]")
+if len(sys.argv) != 4:
+    print("Usage: python server.py [model-file] [range-file] [port-number]")
     exit(0)
 
 model = libsvm.svm_load_model(sys.argv[1])
@@ -26,14 +26,14 @@ class Media:
 
 class AjaxHandler(tornado.web.RequestHandler):
    def get(self, tag, max_tag_id):
-      print tag
+      #print tag
       p = Pool(10)
 
       medias, next_ = util.search_by_tag(tag, 3, max_tag_id)
 
       fs = p.map(util.features, medias)
 
-      p_label, _, _ = libsvm.svm_predict([1] * len(fs), fs, model)
+      p_label, _, _ = libsvm.svm_predict([1] * len(fs), fs, model, "-q")
       medias = map(lambda (m, l): Media(m, l).__dict__, zip(medias, p_label))
 
       self.write(json.dumps({
@@ -60,9 +60,9 @@ class MainHandler(tornado.web.RequestHandler):
 
       fs = p.map(util.features, medias)
       p_label, _, _ = libsvm.svm_predict([1] * len(fs), fs, model)
-      for (m, f) in zip(medias, fs):
-         print(m["caption"]["text"])
-         print(f)
+      #for (m, f) in zip(medias, fs):
+         #print(m["caption"]["text"])
+         #print(f)
       if self.prefix == "ajax":
          medias = map(lambda (m, l): Media(m, l).__dict__, zip(medias, p_label))
          self.write(json.dumps({
@@ -91,5 +91,5 @@ application = tornado.web.Application([
 )
 
 if __name__ == "__main__":
-   application.listen(9999)
+   application.listen(int(sys.argv[3]))
    tornado.ioloop.IOLoop.instance().start()
